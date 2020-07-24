@@ -11,8 +11,7 @@ func main(){
 	r.hashi = make(map[int]int)
 	r.add(4)
 	r.add(6)
-	// r.add(7)
-	fmt.Println("ji")
+	r.add(7)
 	fmt.Println(r.show(4))
 	fmt.Println(r.hashi)
 }
@@ -29,19 +28,30 @@ func (l *lru) len() int{
 func (l *lru) add(n int){
 	if(l.hashi[n]!=0){
 		sam:=l.hashi[n]
+		// fmt.Println("n")
 		delete(l.hashi, n)
-		for i:=sam;i<l.len();i++{
+		for i:=sam;i<l.len()-1;i++{
+			l.hashi[l.Objects[i+1]]--
 			l.Objects[i]=l.Objects[i+1]
 		}
 		l.Objects=l.Objects[:l.len()-1]
 	}
 	if(l.len()==l.capacity){
 		sam:=l.Objects[0]
+		delete(l.hashi, sam)
 		l.Objects = l.Objects[1:]
+		for i:=0;i<l.len();i++{
+			l.hashi[l.Objects[i]]--
+		}
+		// for i:=0;i<l.len()-1;i++{
+		// 	l.hashi[l.Objects[i+1]]--
+		// 	l.Objects[i]=l.Objects[i+1]
+		// }
+		// l.Objects = l.Objects[:l.len()-1]
 		delete(l.hashi, sam)
 	}
 	l.Objects = append(l.Objects, n)
-	l.hashi[n]=1
+	l.hashi[n]=l.len()-1
 }
 
 func (l *lru) get() (int,error){
@@ -55,8 +65,9 @@ func (l *lru) get() (int,error){
 
 
 func (l *lru) show(n int) bool{
-	fmt.Println(l.Objects)
-	if(l.hashi[n]!=0){
+	v, found := l.hashi[n]
+	_ = v
+	if(found){
 		return(true)
 	}
 	return(false)
