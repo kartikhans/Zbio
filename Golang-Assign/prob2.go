@@ -6,23 +6,25 @@ import (
 
 
 
-type Node struc {
+type Node struct {
 	value int
-	left Node
-	right Node
+	left *Node
+	right *Node
 }
 
-func makebtree(inord []int, postord []int, n int[]) Node{
-	pindex:=[1]int
+func makebtree(inord []int, postord []int, n int) *Node{
+	pindex:=make([]int,1)
 	pindex[0]=n-1
 	return(funcbtree(inord, postord, 0, n-1, pindex))
 }
 
-func funcbtree(inord []int, postord []int, strt int, end int, pindex []int) Node{
+func funcbtree(inord []int, postord []int, strt int, end int, pindex []int) *Node{
+	var s *Node
 	if(strt>end){
-		return(nil)
+		return(s)
 	}
-	node:=Node{value: postord[pindex[0]], left: nil, right:nil}
+	var node *Node
+	node = &Node{value: postord[pindex[0]], left: nil, right:nil}
 	pindex[0]--
 	if(strt==end){
 		return(node)
@@ -34,7 +36,7 @@ func funcbtree(inord []int, postord []int, strt int, end int, pindex []int) Node
 	return(node)
 }
 
-func search(arr []int, strt int, end int, value int){
+func search(arr []int, strt int, end int, value int) int{
 	i:=0
 	for i=strt;i<end+1;i++{
 		if(arr[i]==value){
@@ -43,11 +45,12 @@ func search(arr []int, strt int, end int, value int){
 	}
 	return(i)
 }
+
 func main(){
 	inord:=[]int{9,3,15,20,7}
 	postord:=[]int{9,15,7,20,3}
 	leni:=len(inord)
-	var x Node
+	var x *Node
 	x = makebtree(inord,postord,leni)
-	fmt.Prinltn(x.data)
+	fmt.Println(x.right.right.value)
 }
