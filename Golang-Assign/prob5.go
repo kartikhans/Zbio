@@ -1,13 +1,20 @@
 package main
 import(
 	"fmt"
+	"errors"
 )
 
 func main(){
 	var r lru
 	r.Objects = make([]int,0)
-	r.capacity = 10
-
+	r.capacity = 2
+	r.hashi = make(map[int]int)
+	r.add(4)
+	r.add(6)
+	// r.add(7)
+	fmt.Println("ji")
+	fmt.Println(r.show(4))
+	fmt.Println(r.hashi)
 }
 
 type lru struct{
@@ -16,20 +23,41 @@ type lru struct{
 	hashi map[int]int
 }
 
-func (l *lru) len(){
+func (l *lru) len() int{
 	return(len(l.Objects))
 }
 func (l *lru) add(n int){
-	if(l.hashi[int]!=0){
+	if(l.hashi[n]!=0){
 		sam:=l.hashi[n]
-		delete(l.hashi, int)
-
+		delete(l.hashi, n)
+		for i:=sam;i<l.len();i++{
+			l.Objects[i]=l.Objects[i+1]
+		}
+		l.Objects=l.Objects[:l.len()-1]
 	}
 	if(l.len()==l.capacity){
+		sam:=l.Objects[0]
 		l.Objects = l.Objects[1:]
+		delete(l.hashi, sam)
 	}
 	l.Objects = append(l.Objects, n)
-	l.hashi[n]=len(l.Objects)-1
+	l.hashi[n]=1
 }
 
-func (l *lru) get()
+func (l *lru) get() (int,error){
+	if(l.len()==0){
+		return -1, errors.New("lru is empty")
+	}
+	sam:=l.Objects[0]
+	l.Objects = l.Objects[1:]
+	return sam, nil
+}
+
+
+func (l *lru) show(n int) bool{
+	fmt.Println(l.Objects)
+	if(l.hashi[n]!=0){
+		return(true)
+	}
+	return(false)
+}
