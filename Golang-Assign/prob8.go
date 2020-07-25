@@ -4,24 +4,20 @@ import(
 )
 
 func main(){
-	fmt.Println("samuel")
 	var r Orderdict
 	r.Objects = make([]string,0)
 	r.hashi = make(map[string]int)
 	r.add("kartik", 5)
 	r.add("sam", 4)
 	r.add("fiscal", 6)
+	r.add("kartik",2)
 	fmt.Println(r.get("kartik"))
-	fmt.Println(len(r.Objects))
 	fmt.Println(r.deltop())
-
 	f:=r.retrieve()
-	fmt.Println(f[0])
-	fmt.Println(len(r.Objects))
+	fmt.Println(f)
 }
 
 type Orderdict struct{
-	// arr:=make([]string,0)
 	Objects []string
 	hashi map[string]int
 }
@@ -31,12 +27,16 @@ type tuple struct{
 	value int
 }
 
-// func (l *Orderdict) init(){
-// 	l.arr:=make([]string,0)
-// }
 func (l *Orderdict) add(key string,value int){
+	v, found := l.hashi[key]
+	_=v
+	if(found){
+		l.hashi[key]=value
+	}else{
 	l.hashi[key]=value
 	l.Objects = append(l.Objects, key)
+	}
+	
 }
 
 func (l *Orderdict) get(key string) int{
