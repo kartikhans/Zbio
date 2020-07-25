@@ -46,11 +46,22 @@ func search(arr []int, strt int, end int, value int) int{
 	return(i)
 }
 
+func preorder(x *Node) {
+	if(x==nil){
+		return
+	}
+	fmt.Print(x.value," ")
+	preorder(x.left)
+	preorder(x.right)
+}
+
 func main(){
 	inord:=[]int{9,3,15,20,7}
 	postord:=[]int{9,15,7,20,3}
 	leni:=len(inord)
 	var x *Node
 	x = makebtree(inord,postord,leni)
-	fmt.Println(x.right.right.value)
+	preorder(x)
+	fmt.Println()
+	// fmt.Println(x.right.right.value)
 }

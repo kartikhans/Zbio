@@ -15,6 +15,13 @@ func uniquecount(stri []string) int{
 	i:=0
 	counter:=0
 	for i<len(stri){
+		// var sam string
+		if(stri[i][0]=='"' || stri[i][0]=='!'){
+			stri[i]=stri[i][1:]
+		}
+		if(stri[i][len(stri[i])-1]=='.' || stri[i][len(stri[i])-1]=='"'){
+			stri[i]=stri[i][:len(stri[i])-1]
+		}
 		elem, status := mapi[stri[i]]
 		_ =elem
 		if(!status){
